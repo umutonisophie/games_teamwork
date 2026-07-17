@@ -5,7 +5,7 @@ import {
   PLAYER1,
   PLAYER2,
   DIRECTIONS,
-} from "./constants";
+} from "./components/constants";
 
 export function createBoard() {
   return Array.from(

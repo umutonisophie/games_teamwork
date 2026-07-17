@@ -2,7 +2,7 @@ import {
   EMPTY,
   PLAYER1,
   PLAYER2,
-} from "../constants";
+} from "./constants";
 
 export default function Cell({ value }) {
   let classes =
