@@ -1,38 +1,72 @@
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { issueUrl } from "@/app/games/_lib/loader";
+"use client";
 
-// 🚧 PLACEHOLDER — this game hasn't been built yet.
-// If you claimed "Tron Duel", replace everything in this file with your game.
-// See app/games/tic-tac-toe/ for a complete worked example, and CONTRIBUTING.md.
-export default function TronDuelPage() {
+import { useState, useEffect } from "react";
+
+import {
+  createInitialGame,
+  nextGame,
+  updateDirection,
+} from "./logic";
+
+import Board from "./components/Board";
+import HUD from "./components/HUD";
+
+export default function TronDuel() {
+  const [game, setGame] = useState(createInitialGame());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+     setGame((current) => {
+  const updated = nextGame(current);
+  console.log(updated.score);
+  return updated;
+});
+    }, 220);
+
+    return () => clearInterval(interval);
+  }, []);
+  useEffect(() => {
+ function handleKeyDown(event) {
+  if (event.key === "r" || event.key === "R") {
+    setGame(createInitialGame());
+    return;
+  }
+
+  setGame((current) => updateDirection(current, event.key));
+}
+
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+}, []);
+
   return (
-    <div className="mx-auto max-w-md py-12">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between gap-2">
-            <CardTitle>Tron Duel</CardTitle>
-            <Badge variant="secondary">hard</Badge>
-          </div>
-        </CardHeader>
-        <CardContent className="text-muted-foreground space-y-4 text-sm">
-          <p className="text-foreground text-base">
-            {"Two light-cycles; don't crash into a trail."}
-          </p>
-          <p>🚧 This game hasn&apos;t been built yet.</p>
-          <p>
-            The full spec — objective, rules, required features and definition of done — lives in
-            issue #51. Claim it, then replace this file with your game.
-          </p>
-          <Button asChild variant="outline" size="sm">
-            <Link href={issueUrl(51)} target="_blank" rel="noopener noreferrer">
-              Read the full spec (issue #51)
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+    <main className="
+min-h-screen
+bg-[radial-gradient(circle_at_center,#111827_0%,#000000_70%)]
+flex
+flex-col
+items-center
+justify-center
+p-6
+overflow-hidden
+">
+      <HUD game={game} />
+
+      <Board board={game.board} />
+      {game.gameOver && (
+  <div className="mt-8 text-center">
+    <h2 className="text-4xl font-bold text-yellow-400">
+    {game.winner} Wins!
+    </h2>
+
+    <p className="text-gray-400 mt-2">
+      Press R to play again
+    </p>
+  </div>
+)}
+    </main>
   );
 }

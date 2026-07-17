@@ -4,8 +4,8 @@ const meta = {
   title: "Tron Duel",
   difficulty: "hard", // "easy" | "medium" | "hard"
   issue: 51, // GitHub issue number holding the full spec
-  status: "unclaimed", // "unclaimed" | "in-progress" | "done"
-  author: null, // your name, e.g. "Jane Doe"
+  status: "Done", // "unclaimed" | "in-progress" | "done"
+  author: "NikkiWanjiku/SophieUmutoni", // your name, e.g. "Jane Doe"
   github: null, // your GitHub handle, e.g. "janedoe"
   description: "Two light-cycles; don't crash into a trail.",
 };
